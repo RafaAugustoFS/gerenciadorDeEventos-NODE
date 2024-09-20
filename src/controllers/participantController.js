@@ -1,4 +1,3 @@
-const Event = require("../models/event");
 const Participant = require("../models/participant");
 
 const ParticipantController = {
@@ -8,6 +7,16 @@ const ParticipantController = {
 
       console.log(nome, email, eventoId);
 
+      const emailsEncontrados = await Participant.findAll({
+        where: { email : email },
+        attributes: ["email"],
+      });
+      
+      if(email === emailsEncontrados){
+        console.log("Email já existente!!");
+        return;
+      };
+
       const participantCreated = await Participant.create({
         nome,
         email,
@@ -15,7 +24,7 @@ const ParticipantController = {
       });
 
       return res.status(200).json({
-        msg: "Evento Criado!",
+        msg: "Participante Criado!",
         participant: participantCreated,
       });
     } catch (error) {
@@ -113,10 +122,13 @@ const ParticipantController = {
       });
     }
   },
-  getAllParticipants: async (req, res) => {
+  getAllParticipantsEvent: async (req, res) => {
     try {
-      const { id } = req.params;
-      const particantesEncontrados = await Participant.findByPk(id == Event.eventoId);
+      const { eventoId } = req.params;
+      const particantesEncontrados = await Participant.findAll({
+        where: { eventoid : eventoId },
+        attributes: ["nome", "email", "eventoId"],
+      });
 
       return res.status(200).json({
         msg: "Participantes encontrados! ",
@@ -129,5 +141,24 @@ const ParticipantController = {
       });
     }
   },
+  getAllParticipants: async(req, res) =>{
+    try {
+      const { id } = req.params;
+      const particantesEncontrados = await Participant.findAll({
+        where: { eventoId : id },
+        attributes: ["nome", "email", "eventoId"],
+      });
+
+      return res.status(200).json({
+        msg: "Participantes encontrados! ",
+        participantes: particantesEncontrados,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        msg: "Acione o suporte!",
+      });
+    }
+  }
 };
 module.exports = ParticipantController;

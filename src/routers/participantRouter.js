@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const ParticipantController = require('../controllers/participantController')
+const ParticipantController = require('../controllers/participantController');
 
 const router = Router();
 
@@ -23,8 +23,9 @@ router.delete('/:id', (req, res) =>{
     ParticipantController.delete(req, res)
 })
 
-router.get('/:id/participante', (req, res) =>{
-    ParticipantController.getAllParticipants(req, res)
+router.get('/por-evento/:eventoId', (req, res) =>{
+    ParticipantController.getAllParticipantsEvent(req, res)
 })
+
 
 module.exports = router;

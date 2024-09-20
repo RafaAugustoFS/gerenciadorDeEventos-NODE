@@ -108,12 +108,6 @@ const EventController = {
         });
     }
   },
-  getAllParticipants: async(req, res) =>{
-    try {
-        const { id } = req.params;
-    } catch (error) {
-        
-    }
-  }
+  
 };
 module.exports = EventController;
