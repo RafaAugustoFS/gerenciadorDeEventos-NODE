@@ -12,7 +12,7 @@ const ParticipantController = {
         attributes: ["email"],
       });
       
-      if(email === emailsEncontrados){
+      if(email == emailsEncontrados.toString){
         console.log("Email já existente!!");
         return;
       };
@@ -48,7 +48,7 @@ const ParticipantController = {
           msg: "Participante não encontrado",
         });
       }
-      const updated = await userUpdate.update({
+      const updated = await participantUpdated.update({
         nome,
         email,
         eventoId,
@@ -92,7 +92,7 @@ const ParticipantController = {
         });
       }
       return res.status(200).json({
-        msg: "Evento encontrado com sucesso!",
+        msg: "Participante encontrado com sucesso!",
         participant: participanteEncontrado,
       });
     } catch (error) {
@@ -112,7 +112,7 @@ const ParticipantController = {
       await participanteEncontrado.destroy();
 
       return res.status(200).json({
-        msg: "Evento deletado!",
+        msg: "Participante deletado!",
         participante: participanteEncontrado,
       });
     } catch (error) {

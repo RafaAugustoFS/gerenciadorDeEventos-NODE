@@ -34,7 +34,7 @@ const EventController = {
           msg: "Evento não encontrado",
         });
       }
-      const updated = await userUpdate.update({
+      const updated = await eventUpdated.update({
         nome,
         data,
         localizacao,
@@ -89,7 +89,7 @@ const EventController = {
   delete: async (req, res) => {
     try {
         const { id } = req.params;
-        const eventoEncontrado = await User.findByPk(id);
+        const eventoEncontrado = await Event.findByPk(id);
         if (eventoEncontrado == null) {
           return res.status(200).json({
             msg: " Evento não encontrado!",
