@@ -1,4 +1,5 @@
 const Event = require("../models/event");
+const Participant = require("../models/participant");
 
 const EventController = {
   create: async (req, res) => {
@@ -89,25 +90,30 @@ const EventController = {
   delete: async (req, res) => {
     try {
         const { id } = req.params;
-        const eventoEncontrado = await Event.findByPk(id);
-        if (eventoEncontrado == null) {
-          return res.status(200).json({
-            msg: " Evento não encontrado!",
-          });
+        const eventFound = await Event.findByPk(id);
+        if (eventFound === null) {
+            return res.status(404).json({
+                msg: 'Evento não encontrado'
+            });
         }
-        await eventoEncontrado.destroy(); 
+        await Participant.destroy({
+            where: { eventoId: id }
+        });
 
+        await Event.destroy({
+            where: { id: id }
+        });
+       
         return res.status(200).json({
-            msg: "Evento deletado!",
-            evento: eventoEncontrado
-        })
+            msg: 'Evento deletado com sucesso!'
+        });
     } catch (error) {
         console.error(error);
         return res.status(500).json({
-            msg: "Acione o suporte!"
+            msg: 'Acione o suporte.'
         });
     }
-  },
+}
   
 };
 module.exports = EventController;

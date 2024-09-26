@@ -8,14 +8,16 @@ const ParticipantController = {
       console.log(nome, email, eventoId);
 
       const emailsEncontrados = await Participant.findAll({
-        where: { email : email },
+        where: { email: email },
         attributes: ["email"],
       });
-      
-      if(email == emailsEncontrados.toString){
+
+      if (emailsEncontrados.length > 0) {
         console.log("Email já existente!!");
-        return;
-      };
+        return res.status(404).json({
+          msg: "Email já cadastrado!",
+        });
+      }
 
       const participantCreated = await Participant.create({
         nome,
@@ -126,7 +128,7 @@ const ParticipantController = {
     try {
       const { eventoId } = req.params;
       const particantesEncontrados = await Participant.findAll({
-        where: { eventoid : eventoId },
+        where: { eventoid: eventoId },
         attributes: ["nome", "email", "eventoId"],
       });
 
@@ -141,11 +143,11 @@ const ParticipantController = {
       });
     }
   },
-  getAllParticipants: async(req, res) =>{
+  getAllParticipants: async (req, res) => {
     try {
       const { id } = req.params;
       const particantesEncontrados = await Participant.findAll({
-        where: { eventoId : id },
+        where: { eventoId: id },
         attributes: ["nome", "email", "eventoId"],
       });
 
@@ -159,6 +161,6 @@ const ParticipantController = {
         msg: "Acione o suporte!",
       });
     }
-  }
+  },
 };
 module.exports = ParticipantController;
